@@ -1,8 +1,8 @@
 import traceback
 from playwright.sync_api import sync_playwright
 
-def debug_search_results_v2():
-    print("🚀 开始排查详情页链接布局 (优化输入与加载等待)...")
+def debug_search_results_v3():
+    print("🚀 开始排查详情页 (采用模糊搜索避开全半角符号的坑)...")
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(
@@ -26,26 +26,25 @@ def debug_search_results_v2():
             page.click("text=国产牙膏备案产品信息")
             page.wait_for_timeout(5000)
 
-            print("2. 模拟真人填入公司名...")
-            company_name = "薇美姿实业(广东)股份有限公司"
+            print("2. 使用模糊搜索，填入核心关键词...")
+            # 核心优化：只搜前三个字，避开所有容易错的特殊符号和地区名
+            company_name = "薇美姿"
             input_locator = page.locator("input[type='text']").nth(3)
             
-            # 核心优化：模拟真人交互
-            input_locator.click() # 先点一下框
-            input_locator.fill("") # 清空可能存在的旧数据
-            input_locator.type(company_name, delay=200) # 每个字停顿0.2秒敲进去
-            page.keyboard.press("Tab") # 按Tab键触发网页内部的数据绑定
+            input_locator.click() 
+            input_locator.fill("") 
+            input_locator.type(company_name, delay=200) 
+            page.keyboard.press("Tab") 
             page.wait_for_timeout(1000)
 
             print("3. 点击查询按钮...")
             page.click("text=查询")
             
-            print("4. 等待搜索结果完全加载 (耐心等待15秒)...")
-            # 给页面充分的时间让那个蓝色的加载圈消失
-            page.wait_for_timeout(15000) 
+            print("4. 等待搜索结果完全加载 (耐心等待10秒)...")
+            page.wait_for_timeout(10000) 
 
             print("📸 拍下带有搜索结果的全景图！")
-            page.screenshot(path="search_result_debug_v2.png", full_page=True)
+            page.screenshot(path="search_result_fuzzy.png", full_page=True)
             
             print("✅ 截图已保存，安全退出！")
             browser.close()
@@ -55,4 +54,4 @@ def debug_search_results_v2():
         print(traceback.format_exc())
 
 if __name__ == "__main__":
-    debug_search_results_v2()
+    debug_search_results_v3()
