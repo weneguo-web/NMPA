@@ -1,8 +1,8 @@
 import traceback
 from playwright.sync_api import sync_playwright
 
-def test_guangdong_search():
-    print("🚀 开始测试菜单点击与自动搜索...")
+def test_guangdong_precise_search():
+    print("🚀 开始精准填表测试...")
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(
@@ -24,38 +24,31 @@ def test_guangdong_search():
             page.goto("https://mpa.gd.gov.cn/wycxh5/yjj-pc/#/data", timeout=60000)
             page.wait_for_timeout(5000)
             
-            print("2. 点击左侧菜单 '化妆品'...")
+            print("2. 点击 '化妆品' -> '国产牙膏备案产品信息'...")
             page.click("text=化妆品")
-            page.wait_for_timeout(2000) # 等待菜单展开
-            
-            print("3. 点击 '国产牙膏备案产品信息'...")
+            page.wait_for_timeout(2000)
             page.click("text=国产牙膏备案产品信息")
-            page.wait_for_timeout(5000) # 等待右侧表单加载
-            
-            print("📸 拍下牙膏表单截图...")
-            page.screenshot(path="step1_form.png", full_page=True)
+            page.wait_for_timeout(5000)
 
-            print("4. 尝试输入公司名称并搜索...")
+            print("3. 精准填入'备案人企业名称'...")
             company_name = "薇美姿实业(广东)股份有限公司"
             
-            # 黑科技：寻找所有文本输入框，并尝试填入公司名
-            inputs = page.locator("input[type='text']")
-            count = inputs.count()
-            for i in range(count):
-                try:
-                    inputs.nth(i).fill(company_name)
-                except:
-                    pass
+            # 找到页面上所有的文本输入框
+            text_inputs = page.locator("input[type='text']")
             
-            print("5. 点击 '查询' 按钮...")
+            # 因为代码计数是从 0 开始的，所以第 4 个输入框的编号是 3
+            # 我们只在这个框里填入公司名
+            text_inputs.nth(3).fill(company_name)
+            
+            print("4. 点击 '查询' 按钮...")
             page.click("text=查询")
-            page.wait_for_timeout(6000) # 等待搜索结果加载
+            page.wait_for_timeout(6000) # 等待搜索结果加载出来
 
-            print("📸 拍下搜索结果截图...")
-            page.screenshot(path="step2_result.png", full_page=True)
+            print("📸 拍下精准搜索后的结果截图...")
+            page.screenshot(path="step3_precise_result.png", full_page=True)
             
             browser.close()
-            print("✅ 搜索测试结束！")
+            print("✅ 测试结束！")
             
     except Exception as e:
         print("\n❌ 发生错误了！")
@@ -66,4 +59,4 @@ def test_guangdong_search():
             pass
 
 if __name__ == "__main__":
-    test_guangdong_search()
+    test_guangdong_precise_search()
