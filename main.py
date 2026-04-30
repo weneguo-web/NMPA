@@ -10,7 +10,7 @@ def test_guangdong():
         
         print("1. 正在访问广东药监局网站...")
         # 访问你 PDF 中提供的广东药监局网址
-        page.goto("https://www.nmpa.gov.cn/datasearch/home-index.html?3jfdxVGGVXFo=1758782433409#category=hzp")
+        page.goto("https://mpa.gd.gov.cn/wycxh5/yjj-pc/#/data")
         # 稍微等 5 秒，让网页加载完毕
         page.wait_for_timeout(5000) 
         
