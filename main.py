@@ -21,7 +21,7 @@ def test_guangdong_stealth():
         stealth_sync(page)
 
         print("1. 正在伪装成真实用户访问网站...")
-        page.goto("https://www.nmpa.gov.cn/datasearch/home-index.html?3jfdxVGGVXFo=1758782433409#category=hzp")
+        page.goto("https://mpa.gd.gov.cn/wycxh5/yjj-pc/#/data")
         
         # 药监局的防火墙需要几秒钟来做人机验证，所以我们多等一会儿（10秒）
         print("2. 正在等待页面安全验证加载...")
