@@ -1,9 +1,7 @@
 name: Daily Toothpaste Monitor
 
 on:
-  schedule:
-    - cron: '0 2 * * *' # 国际时间 2:00 等于北京时间 10:00
-  workflow_dispatch: # 允许你手动点击按钮运行
+  workflow_dispatch: # 目前我们只用手动触发测试
 
 jobs:
   run_spider:
@@ -19,8 +17,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install playwright
           playwright install chromium
 
       - name: Run Monitor Script
         run: python main.py
+
+      - name: Upload Screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshot  # 你打包下载的文件名
+          path: test_screenshot.png # 要上传的截图文件
