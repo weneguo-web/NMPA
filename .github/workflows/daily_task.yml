@@ -1,0 +1,26 @@
+name: Daily Toothpaste Monitor
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 国际时间 2:00 等于北京时间 10:00
+  workflow_dispatch: # 允许你手动点击按钮运行
+
+jobs:
+  run_spider:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run Monitor Script
+        run: python main.py
