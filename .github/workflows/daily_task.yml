@@ -29,4 +29,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-screenshot  # 你打包下载的文件名
-          path: test_screenshot.png # 要上传的截图文件
+          path: "*.png" # 这样会打包所有的图片
